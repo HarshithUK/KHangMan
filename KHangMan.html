@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>KHangMan</title>
+<link rel = "stylesheet" href = "style.css" />
+</head>
+<body>
+<script type = "text/javascript">
+<!--
+	var str = "";
+	var s = "";
+	var qst = "";
+	var miss = "";
+	var count,q,t = 1,a,k,w,len,b = 1,u = 0,qt = "",y = 0,g = 0;
+	function init()
+	{
+		len = 0;
+		k = 0;
+		a = 0;
+		qst = question(b);
+		for(var i=0;i<qst.length;++i)
+		{
+			if(qst[i]=='?')
+			{
+				qt = qst.substr(0,i+1);
+				str = qst.substr(i+2);
+				len = str.length;
+				s = "__________";
+				miss = "__________";
+				break;
+			}
+		}
+		count = 10;
+		q = 3;
+		g = b;
+		w = false;
+	}
+	function menu()
+	{
+		changeBackgroundImage();
+		document.body.innerHTML = '';
+		document.writeln("<div class = 'headbold'><h1 class  = 'headlight'><span id = 'font-black'>KH</span>ang<span id = 'font-black'>M</span>an</h1>");
+		document.writeln("<h3 id = 'linepos'><pre>                                                    </pre></h3>");
+		document.writeln("<div id = 'picon'><h3 class = 'headlight'><span id = 'font-black'>P</span>lay <span id = 'font-black'>KH</span>ang<span id = 'font-black'>M</span>an</h4>");
+		document.writeln("<img id = 'pic' src = 'images/hangman.png' onclick = 'game()'></img></div>");
+		document.writeln("<div id = 'picon'><h3 class = 'headlight'><span id = 'font-black'>I</span>nstructions</h4>");
+		document.writeln("<img id = 'pic' src = 'images/instructions.png' onclick = 'instructions()'></img></div>");
+		document.writeln("<div id = 'picon'><h3 class = 'headlight'><span id = 'font-black'>E</span>xit</h4>");
+		document.writeln("<a href = 'games.html'><img id = 'pic' src = 'images/exit.png' alt = 'exit'></img></a></div>");
+		document.writeln("</div>");
+	}
+	function game()
+	{
+		if(g!=b)
+		{
+			init();
+		}
+		if(!w)
+		{
+			document.body.innerHTML = '';
+		}
+		document.writeln("<div class = 'headbold'><h1 class  = 'headlight' style = 'color:white;font-family:LatoWebBlack;text-align: center;font-weight:100;position:relative;'><span id = 'font-black'>KH</span>ang<span id = 'font-black'>M</span>an</h1>");
+		document.writeln("<h3 id = 'linepos'><pre>                                                    </pre></h3>");
+		document.writeln("<h2 id = 'font-black' style = 'color:white;'>Q : "+qt+"</h2>");
+		changeBackgroundImage();
+		document.writeln("<b style = 'color:white'>Enter the letter in capitals :</b>");
+		document.writeln("<br><br><form><input type = 'text' id = 'c' maxlength = '1' style = 'width : 20px'><input type = 'button' onclick = 'Check()' value = 'Check'></form></img>");
+		document.writeln("</div>");
+	}
+	function Exist(ch,st)
+	{
+		for(j=0;j<st.length;++j)
+		{
+			if(st[j]==ch)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	function Check()
+	{
+		var r = 0;
+		w = true;
+		var ch = document.getElementById('c').value;
+		document.body.innerHTML = '';
+		changeBackgroundImage();
+		game();
+		if(isNaN(ch))
+		{
+			ch = ch.toUpperCase();
+			if(Exist(ch,s))
+			{
+				window.alert("You have already entered the character!");
+			}
+			else
+			{
+				for(var i=0;i<len;++i)
+				{
+					if(ch==str.charAt(i))
+					{
+						if(i==0)
+						{
+							s = ch + s.substr(1);
+						}
+						else if(i==len-1)
+						{
+							s = s.substr(0,i) + ch;
+						}
+						else
+						{
+							s = s.substr(0,i) + ch + s.slice(i+1);
+						}
+						++a;
+					}
+					else
+					{
+						++r;
+					}
+				}
+			}
+			if(r==len)
+			{
+				if(Exist(ch,miss))
+				{
+					window.alert("You have already entered the wrong character!");
+				}
+				else
+				{
+					count--;
+					if(k==0)
+					{
+						miss = ch + miss.substr(1,9);
+					}
+					else
+					{
+						miss = miss.substr(0,k) + ch + miss.slice(k+1);
+					}
+					++k;
+				}
+			}
+		}
+		else
+		{
+			q--;
+			if(q!=0)
+			{
+				window.alert("You have not entered any character! You have only "+q+" chances for not entering a character!");
+			}
+		}
+		document.write("<br><div style = 'align:center;border: 5px solid white;width:200px;height:100px;color:white;font-family:LatoWebHairline;'>Chances Left : "+count);
+		document.writeln("<br><br>Word Entered : ");
+		for(var i=0;i<len;++i)
+		{
+			document.write(s[i]+" ");
+		}
+		document.writeln("<br><br>Misses : ");
+		for(var i=0;i<10;++i)
+		{
+			document.write(miss[i]+" ");
+		}
+		document.write("</div>");
+		switch(k)
+		{
+			case 0 : document.writeln("<img src = 'images/pic0.png' align ='right' top='100' left='300'></img>");
+				 break;
+			case 1 : document.writeln("<img src = 'images/pic1.png' align ='right'></img>");
+				 break;
+			case 2 : document.writeln("<img src = 'images/pic2.png' align ='right'></img>");
+				 break;
+			case 3 : document.writeln("<img src = 'images/pic3.png' align ='right'></img>");
+				 break;
+			case 4 : document.writeln("<img src = 'images/pic4.png' align ='right'></img>");
+				 break;
+			case 5 : document.writeln("<img src = 'images/pic5.png' align ='right'></img>");
+				 break;
+			case 6 : document.writeln("<img src = 'images/pic6.png' align ='right'></img>");
+				 break;
+			case 7 : document.writeln("<img src = 'images/pic7.png' align ='middle'></img>");
+				 break;
+			case 8 : document.writeln("<img src = 'images/pic8.png' align ='middle'></img>");
+				 break;
+			case 9 : document.writeln("<img src = 'images/pic9.png' align ='middle'></img>");
+				 break;
+			case 10 : document.writeln("<img src = 'images/pic10.png' align ='middle'></img>");
+				 break;
+		}
+		if(count==0 || q==0)
+		{
+			window.alert("Game Over!");
+			menu();
+		}
+		else if(a==len)
+		{
+			window.alert("Congratulations! You have found the word!");
+			b++;
+			if(b>16)
+			{
+				menu();
+			}
+			else
+			{
+				game();
+			}
+		}
+	}
+	function question(v)
+	{
+		var qs = "";
+		switch(v)
+		{
+			case 1 : qs = "1. Which is the fastest animal on land? CHEETAH";
+				 break;
+			case 2 : qs = "2. What is the name of the highest mountain? EVEREST";
+				 break;
+			case 3 : qs = "3. Which is the largest mammal in size? WHALE";
+				 break;
+			case 4 : qs = "4. A dozen means (in number)? TWELVE";
+				 break;
+			case 5 : qs = "5. What is the surname of the father of our nation? GANDHI";
+				 break;
+			case 6 : qs = "6. If a wet cloth hung requires one hour to dry, how many hours will 10 clothes hung require to dry? ONE";
+				 break;
+			case 7 : qs = "7. What is the first name of the founder of C-language? DENNIS";
+				 break;
+			case 8 : qs = "8. Which language is the most popular object-oriented language? JAVA";
+				 break;
+			case 9 : qs = "9. What is the surname of the person commonly known as the Father of Computer? BABBAGE";
+				 break;
+			case 10 : qs = "10. Which language is the first object-oriented language? SIMULA";
+				 break;
+			case 11 : qs = "11. Which scientist has proposed the theory of relativity? EINSTEIN";
+				 break;
+			case 12 : qs = "12. What does M stand for in the abbreviation AMD? MICRO";
+				 break;
+			case 13 : qs = "13. What is the abbreviated form for 'Light Amplification And Stimulated Emission Of Radiation'? LASER";
+				 break;
+			case 14 : qs = "14. Which company introduced the Cortana feature? MICROSOFT";
+				 break;
+			case 15 : qs = "15. What is the surname of the Indian cricketer is known as 'Wall of India'? DRAVID";
+				 break;
+			case 16 : qs = "16. He is the founder of Apple Company and his surname is related to employment. His first name is? STEVE";
+				 break;
+		}
+		return qs;
+	}
+	function instructions()
+	{
+		document.body.innerHTML = '';
+		document.writeln("<div class = 'headbold'><ul>");
+		changeBackgroundImage();
+		document.writeln("<h1 id = 'font-black' style = 'margin-bottom:0;color:white'><u>Instructions</u></h1><br>");
+		document.writeln("<li style = 'color:white;'>This game is a puzzle where you need to find out the word based on the given question.</li><br>");
+		document.writeln("<li style = 'color:white;'>A letter must be input on the text box.</li><br>");
+		document.writeln("<li style = 'color:white;'>If the letter is present in the word, then it is filled in the appropriate places in the input string.</li><br>");
+		document.writeln("<li style = 'color:white;'>If the letter is not present in the word, then a chance out of 10 is cut.</li><br>");
+		document.writeln("<li style = 'color:white;'>If you fail in all 10 chances, your game is over.</li><br>");
+		document.writeln("<li style = 'color:white;'>If you have succeeded of finding out the word, then you may go to the next question.</li><br>");
+		document.writeln("<li style = 'color:white;'>However, if you have input a special character, a chance is cut out of 3, in which if you fail in all three, your game is over.</li>");
+		document.writeln("</ul></div>");
+		//document.writeln("<form><input type = 'button' value = 'Back to Menu' onclick = 'menu()'></form>");
+	}
+	function changeBackgroundImage()
+	{
+		document.body.style.backgroundImage = "url(images/dice.png)";
+		document.body.style.backgroundSize = "cover";
+	}
+	menu();
+//-->
+</script>
+</body>
+</html>
